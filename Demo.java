@@ -22,6 +22,15 @@ public class Demo {
     return transformer.apply(data);
   }
 
+  // another multiple generic
+  @FunctionalInterface
+  public interface TriFunction<X, Y, Z, R> {
+      R apply(X x, Y y, Z z);
+  }
+  public <X, Y, Z, R> R dynamicMethod(X param1, Y param2, Z param3, TriFunction<X, Y, Z, R> transformer) {
+      return transformer.apply(param1, param2, param3);
+  }
+
   public <J, W, S> S dynamicMethodNextVersion(J data, W input, Function<W, S> transformer) {
 
     return transformer.apply(input);
@@ -97,5 +106,10 @@ public class Demo {
     String data4 = "Mars!";
     String result3 = demoTest.dynamicMethodNextVersion(data3, data4, String::toUpperCase);
     System.out.println("Transformed result3: " + result3);
+
+    // Example usage another multiple generic
+    TriFunction<Integer, Double, String, String> transformer = (x, y, z) -> "Result: " + x + ", " + y + ", " + z;
+    String result4 = demoTest.dynamicMethod(1, 2.0, "test", transformer);
+    System.out.println(result4);  // Output: Result: 1, 2.0, test
   }
 }
