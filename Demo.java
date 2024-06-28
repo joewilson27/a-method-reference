@@ -12,8 +12,53 @@ public class Demo {
   }
 
   // method reference 2
-  public <T, R> R dynamicMethod(T data, Function<T, R> transformer) {
+  /**
+   * 
+   * in Java generics, any type parameters used in the method NEED TO BE explicitly declared.
+   * When you define a method with generics, you NEED TO declare all the type parameters that 
+   * the method uses. This includes not only the return type but also any parameter types.
+   */
+  public <T, R> R dynamicMethod(T data, Function<T, R> transformer) { // its also can be --> public <R, T> R dynamicMethod(T data, Function<T, R> transformer) { (change position in generic at type return <T, R> become <R, T>)
     return transformer.apply(data);
+  }
+
+  public <J, W, S> S dynamicMethodNextVersion(J data, W input, Function<W, S> transformer) {
+
+    return transformer.apply(input);
+
+    // TO DO: dynamic
+
+    // String forString = "";
+    // Integer forNumber = 0;
+
+    // if (data instanceof String) {
+    //   forString += data;
+    // }
+
+    // if (input instanceof String) {
+    //   forString = forString + " " + input;
+    // }
+
+    // if (data instanceof Integer) {
+    //   forNumber = data;
+    // }
+
+    // if (input instanceof Integer) {
+    //   forNumber = input;
+    // }
+
+    // if (forString != "") {
+    //   return transformer.apply(forString);
+    // } else {
+    //   return "";
+    // }
+
+    // if (forNumber > 0) {
+    //   return transformer.apply(forNumber);
+    // } else {
+    //   return 0;
+    // }
+
   }
 
   public static void main(String[] args) {
@@ -41,10 +86,16 @@ public class Demo {
     // method reference 2
     String data1 = "123";
     Integer result1 = demoTest.dynamicMethod(data1, Integer::valueOf);
-    System.out.println("Transformed Data1: " + result1); // Output: Transformed Data: 123
+    System.out.println("Transformed result1: " + result1); // Output: Transformed Data: 123
 
     String data2 = "hello";
     String result2 = demoTest.dynamicMethod(data2, String::toUpperCase);
-    System.out.println("Transformed Data2: " + result2); // Output: Transformed Data: HELLO
+    System.out.println("Transformed result2: " + result2); // Output: Transformed Data: HELLO
+
+    // try String
+    String data3 = "Hello ";
+    String data4 = "Mars!";
+    String result3 = demoTest.dynamicMethodNextVersion(data3, data4, String::toUpperCase);
+    System.out.println("Transformed result3: " + result3);
   }
 }
