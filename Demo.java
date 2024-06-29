@@ -22,15 +22,6 @@ public class Demo {
     return transformer.apply(data);
   }
 
-  // another multiple generic
-  @FunctionalInterface
-  public interface TriFunction<X, Y, Z, R> {
-      R apply(X x, Y y, Z z);
-  }
-  public <X, Y, Z, R> R dynamicMethod(X param1, Y param2, Z param3, TriFunction<X, Y, Z, R> transformer) {
-      return transformer.apply(param1, param2, param3);
-  }
-
   public <J, W, S> S dynamicMethodNextVersion(J data, W input, Function<W, S> transformer) {
 
     return transformer.apply(input);
@@ -68,6 +59,26 @@ public class Demo {
     //   return 0;
     // }
 
+  }
+
+  // another multiple generic
+  @FunctionalInterface // REMEMBER, the last generic (in this case is R) is always be the return type
+  public interface TriFunction<X, Y, Z, R> {
+      R apply(X x, Y y, Z z);
+  }
+  public <X, Y, Z, R> R dynamicMethodMultiple(X param1, Y param2, Z param3, TriFunction<X, Y, Z, R> transformer) {
+      return transformer.apply(param1, param2, param3);
+  }
+
+  // so we try to create an interface that has 4 parameters
+  @FunctionalInterface
+  public interface FourParamsFunction<U, X, Y, Z, R> {
+    R apply(U u, X x, Y y, Z z);
+  }
+
+  // create method that has a parameter using FourParamsFunction interface
+  public <U, X, Y, Z, R> R dynamicMethodMultipleAgaim(U u, X x, Y y, Z z, FourParamsFunction<U, X, Y, Z, R> transformer) {
+    return transformer.apply(u, x, y, z);
   }
 
   public static void main(String[] args) {
@@ -109,7 +120,13 @@ public class Demo {
 
     // Example usage another multiple generic
     TriFunction<Integer, Double, String, String> transformer = (x, y, z) -> "Result: " + x + ", " + y + ", " + z;
-    String result4 = demoTest.dynamicMethod(1, 2.0, "test", transformer);
+    String result4 = demoTest.dynamicMethodMultiple(1, 2.0, "test", transformer);
     System.out.println(result4);  // Output: Result: 1, 2.0, test
+
+    // example again
+    FourParamsFunction<Integer, Double, String, Integer, String> transformer2 = (u, x, y, z) -> "Result (4 params): " + u + ", " + x + ", " + y + ", " + z;
+    // ingat, pada generic terakhir adalah type string, itulah yang akan menjadi return type, so disini kita membuat variable dgn type string
+    String result5 = demoTest.dynamicMethodMultipleAgaim(7, 7.77, "seven", 777, transformer2);
+    System.out.println(result5);
   }
 }
